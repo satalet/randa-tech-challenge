@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق التكنولوجيا التفاعلي - رندا محمد زربا</title>
+    <!-- خطوط جوجل الجميلة لجعل التطبيق يبدو احترافياً -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- مكتبة الأيقونات الجذابة -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- فريمورك التصميم Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* إضفاء روح التطبيقات الأصلية على الويب */
+        body {
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            background-color: #f0fdf4; /* خلفية هادئة بلون النعناع */
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* تصميم حواف مخصصة للأزرار لتسهيل اللمس على الجوال */
+        .touch-button {
+            min-height: 52px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-height-screen p-3 md:p-6 select-none">
+
+    <!-- الحاوية الرئيسية للتطبيق المتناسقة مع الجوال -->
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden my-auto flex flex-col justify-between" style="min-height: 85vh; max-height: 95vh;">
+
+        <!-- 1. شاشة الترحيب والبداية -->
+        <div id="welcome-screen" class="p-6 flex flex-col items-center justify-between flex-grow text-center">
+            
+            <!-- الهوية والمدرسة في الأعلى -->
+            <div class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl p-4 shadow-md mb-6">
+                <p class="text-xs uppercase tracking-wider font-bold text-emerald-100 mb-1">تحت رعاية بلدية القدس الشريف</p>
+                <h4 class="text-sm font-semibold">مدرسة الدوحة الأساسية للبنات</h4>
+                <p class="text-xs text-teal-50">كفر عقب</p>
+            </div>
+
+            <!-- معلومات رندا بفخر -->
+            <div class="my-auto">
+                <div class="relative w-24 h-24 mx-auto mb-4 bg-emerald-100 rounded-full flex items-center justify-center border-4 border-emerald-500 shadow-inner">
+                    <i class="fa-solid fa-laptop-code text-4xl text-emerald-600"></i>
+                    <span class="absolute -bottom-1 -right-1 bg-yellow-400 text-slate-900 text-xs px-2 py-0.5 rounded-full font-bold shadow-md">ذكاء</span>
+                </div>
+                
+                <h1 class="text-2xl font-black text-slate-800 leading-tight mb-2">الاختبار التكنولوجي التفاعلي</h1>
+                <p class="text-sm text-slate-500 mb-6 px-4">أهم 30 سؤالاً في مادة التكنولوجيا - الصف الثامن (الفصل الدراسي الثاني)</p>
+
+                <!-- لوحة التقدير والاعتزاز برندا -->
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6">
+                    <p class="text-xs text-amber-700 font-bold mb-1"><i class="fa-solid fa-star"></i> فخر مدرسة الدوحة</p>
+                    <p class="text-base text-slate-800 font-bold">تصميم وتنفيذ الطالبة المتميزة:</p>
+                    <p class="text-lg text-emerald-700 font-extrabold tracking-wide mt-1">رندا محمد زربا</p>
+                </div>
+            </div>
+
+            <!-- زر بدء اللعب والتعلم -->
+            <button onclick="startQuiz()" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-extrabold text-lg py-4 rounded-2xl shadow-lg transition-transform touch-button flex items-center justify-center gap-2">
+                <span>ابدئي التحدي الآن</span>
+                <i class="fa-solid fa-circle-play text-xl"></i>
+            </button>
+        </div>
+
+        <!-- 2. شاشة الأسئلة التفاعلية -->
+        <div id="quiz-screen" class="hidden p-5 flex flex-col justify-between flex-grow">
+            <!-- الهيدر الداخلي في الاختبار -->
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="bg-emerald-500 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm">ر</div>
+                    <div>
+                        <p class="text-xs text-slate-400 font-bold">تنفيذ المبدعة رندا زربا</p>
+                        <p class="text-[10px] text-emerald-600 font-semibold">مدرسة الدوحة - كفر عقب</p>
+                    </div>
+                </div>
+                <!-- النتيجة والتقدم -->
+                <div class="text-left">
+                    <span id="score-badge" class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full">النقاط: 0 ⭐</span>
+                </div>
+            </div>
+
+            <!-- شريط التقدم الفعلي -->
+            <div class="w-full bg-slate-100 h-2.5 rounded-full mb-4 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+
+            <!-- مساحة عرض السؤال والخيارات -->
+            <div class="flex-grow flex flex-col justify-between">
+                <div>
+                    <!-- رقم السؤال والعداد -->
+                    <div class="flex items-center justify-between mb-2">
+                        <span id="question-number" class="text-xs font-extrabold text-slate-400 uppercase tracking-widest">السؤال 1 من 30</span>
+                        <button onclick="toggleHint()" id="hint-btn" class="text-xs text-amber-600 hover:text-amber-700 font-bold flex items-center gap-1 bg-amber-50 px-2 py-1 rounded-lg border border-amber-100">
+                            <i class="fa-regular fa-lightbulb"></i>
+                            <span>تلميح مساعد</span>
+                        </button>
+                    </div>
+
+                    <!-- التلميح المساعد المغلق افتراضياً -->
+                    <div id="hint-box" class="hidden bg-amber-50 border-l-4 border-amber-400 p-3 rounded-xl mb-3 text-xs text-amber-800 font-medium">
+                        <!-- تلميح السؤال هنا -->
+                    </div>
+
+                    <!-- نص السؤال -->
+                    <h3 id="question-text" class="text-lg font-bold text-slate-800 leading-snug mb-4">
+                        نص السؤال التكنولوجي هنا...
+                    </h3>
+
+                    <!-- خيارات الإجابة المصممة للجوال -->
+                    <div class="space-y-3" id="options-container">
+                        <!-- أزرار الخيارات تضاف عبر جافا سكريبت هنا -->
+                    </div>
+                </div>
+
+                <!-- مساحة التوضيح والتعليق العلمي بعد الإجابة -->
+                <div id="explanation-box" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-4 my-4">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="feedback-icon" class="text-lg"></span>
+                        <h4 id="feedback-title" class="text-sm font-bold"></h4>
+                    </div>
+                    <p id="rationale-text" class="text-xs text-slate-600 leading-relaxed">التوضيح التكنولوجي للسؤال...</p>
+                </div>
+
+                <!-- الأزرار السفلية للتحقق والانتقال -->
+                <div class="mt-4">
+                    <button id="action-btn" onclick="submitAnswer()" disabled class="w-full bg-slate-200 text-slate-400 font-bold text-base py-3.5 rounded-2xl shadow-sm cursor-not-allowed transition-all touch-button flex items-center justify-center gap-2">
+                        <span>تحقق من الإجابة</span>
+                        <i class="fa-solid fa-circle-check"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. شاشة لوحة النتائج النهائية والتكريم -->
+        <div id="result-screen" class="hidden p-6 flex flex-col items-center justify-between flex-grow text-center">
+            
+            <div class="w-full">
+                <!-- شارة التكريم الكبرى لـ رندا وصاحباتها -->
+                <div class="relative inline-block mb-4 mt-2">
+                    <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center border-4 border-yellow-400 animate-bounce">
+                        <i class="fa-solid fa-trophy text-5xl text-yellow-500"></i>
+                    </div>
+                    <span class="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] px-2 py-1 rounded-full font-bold">بطلة التكنولوجيا</span>
+                </div>
+
+                <h2 class="text-2xl font-black text-slate-800 mb-1">انتهى تحدي التكنولوجيا بنجاح!</h2>
+                <p class="text-sm text-slate-400 mb-6">مبارك إنهاء الامتحان الشامل بتميز</p>
+
+                <!-- صندوق النتيجة الفاخر -->
+                <div class="bg-gradient-to-b from-slate-50 to-slate-100 border border-slate-200 rounded-3xl p-6 shadow-inner mb-6 max-w-xs mx-auto">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">النتيجة النهائية لرندا</p>
+                    <div class="text-5xl font-black text-emerald-600 mb-2" id="final-score-text">0 / 30</div>
+                    <p class="text-sm font-semibold text-slate-700" id="motivational-message">عبارة تشجيعية...</p>
+                </div>
+
+                <!-- كرت توثيق المدرسة الفخرية -->
+                <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-6">
+                    <p class="text-[11px] text-emerald-600 font-bold uppercase mb-1">تم إعداد وتصميم هذا الامتحان بواسطة:</p>
+                    <p class="text-base text-slate-800 font-extrabold">الطالبة: رندا محمد زربا</p>
+                    <p class="text-xs text-slate-500">مدرسة الدوحة الثانوية للبنات • كفر عقب</p>
+                </div>
+            </div>
+
+            <!-- أزرار الإعادة والمشاركة -->
+            <div class="w-full space-y-3">
+                <button onclick="resetQuiz()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-base py-3.5 rounded-2xl shadow-lg transition-transform touch-button flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>إعادة اختبار التحدي 🔄</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- كود جافا سكريبت لإدارة اللعبة كاملة وبدون أي أخطاء -->
+    <script>
+        // بنك الأسئلة المكون من 30 سؤالاً شاملاً ومطابقاً للمنهاج الفلسطيني للصف الثامن الفصل الثاني
+        const questions = [
+            {
+                question: "ما المقصود بعملية \"الاستشعار عن بعد\" (Remote Sensing) تكنولوجياً؟",
+                options: [
+                    "الحصول على بيانات عن الأجسام دون تلامس مباشر معها",
+                    "تشغيل الأجهزة الكهربائية يدوياً عن قرب",
+                    "توصيل الأجهزة التكنولوجية بأسلاك نحاسية قصيرة",
+                    "تنظيف الحواسيب من الفيروسات"
+                ],
+                correct: 0,
+                hint: "فكر في معنى الكلمة \"عن بعد\" أي بلا تماس أو ملامسة فيزيائية للأجسام المراد قياسها.",
+                rationale: "الاستشعار عن بعد يعني استشعار أو قياس الخصائص الفيزيائية للمحيط (مثل الحرارة أو الضوء) دون تماس فيزيائي مباشر معها."
+            },
+            {
+                question: "ما هو أصغر عنصر لبناء الصورة الرقمية على الشاشات والمواقع؟",
+                options: [
+                    "البايت (Byte)",
+                    "البكسل (Pixel)",
+                    "البت (Bit)",
+                    "الترانزستور (Transistor)"
+                ],
+                correct: 1,
+                hint: "هي عبارة عن نقاط مضيئة صغيرة جداً تتكون منها الشاشات لعرض الصور والتفاصيل.",
+                rationale: "البكسل (Pixel) هو أصغر عنصر في الصورة الرقمية، وكلما زاد عدد البكسلات في السنتيمتر زادت جودة ودقة الصورة."
+            },
+            {
+                question: "كم بت (Bit) يحتوي البايت الواحد (Byte) المستخدم لقياس حجم البيانات وتخزينها؟",
+                options: [
+                    "4 بت",
+                    "6 بت",
+                    "8 بت",
+                    "16 بت"
+                ],
+                correct: 2,
+                hint: "هو الرقم القياسي الأساسي في أنظمة تخزين البيانات والحاسوب لتمثيل الحروف والأرقام.",
+                rationale: "البايت الواحد يتكون دائماً من 8 بت، وهي الوحدة المعيارية الأساسية لتمثيل حرف أو رقم واحد في الذاكرة."
+            },
+            {
+                question: "في نظام الألوان الرقمي (RGB)، تشير الحروف الثلاثة إلى الألوان الأساسية التالية:",
+                options: [
+                    "الأحمر والأخضر والأزرق (Red, Green, Blue)",
+                    "الأصفر والأزرق والأحمر (Yellow, Blue, Red)",
+                    "الأبيض والأسود والرمادي",
+                    "البرتقالي والبنفسجي والأخضر"
+                ],
+                correct: 0,
+                hint: "ترجم اختصار الحروف الإنجليزية لمعرفة أسماء الألوان الثلاثة المتداخلة.",
+                rationale: "نظام RGB يعتمد على تداخل الإضاءة لثلاثة ألوان رئيسية هي الأحمر (Red) والأخضر (Green) والأزرق (Blue) لإنتاج الألوان على الشاشة."
+            },
+            {
+                question: "عند دمج اللونين الأحمر والأخضر بكامل طاقتهما الضوئية في نظام RGB، نحصل على اللون:",
+                options: [
+                    "الأزرق",
+                    "الأصفر",
+                    "الوردي",
+                    "الأبيض"
+                ],
+                correct: 1,
+                hint: "تخيل مزج حزمة من الضوء الأحمر مع حزمة من الضوء الأخضر الساطع.",
+                rationale: "في مزج الألوان المعتمد على الضوء المنبعث (RGB)، ينتج عن خلط اللونين الأحمر والأخضر اللون الأصفر الساطع."
+            },
+            {
+                question: "ما هو الدور الأساسي للمستشعر أو المجس (Sensor) في دارات التحكم الرقمي والإنترنت؟",
+                options: [
+                    "تنفيذ الحركة المادية للروبوت",
+                    "تحويل الكميات الفيزيائية المحيطة إلى إشارات كهربائية يفهمها النظام",
+                    "توليد وتخزين الطاقة الكهربائية",
+                    "تبريد وتدفئة الدارة"
+                ],
+                correct: 1,
+                hint: "المجس يمثل الحواس الخمسة للدارة، فهو يقرأ البيئة المحيطة كالعين والأذن.",
+                rationale: "يعمل المجس كأداة إدخال، حيث يتحسس الحرارة، الضوء، أو الحركة، ويحول هذه الكمية الفيزيائية إلى إشارة كهربائية للمعالجة."
+            },
+            {
+                question: "أي من المستشعرات التالية هو المسؤول عن فتح الأبواب التلقائية في المولات والمطارات عند اقترابنا؟",
+                options: [
+                    "مجس رطوبة التربة",
+                    "مجس الأشعة تحت الحمراء أو الحركة (IR)",
+                    "مجس الحرارة والبرودة",
+                    "مجس الصوت والاهتزاز"
+                ],
+                correct: 1,
+                hint: "هذا المجس يعمل على إطلاق أشعة غير مرئية ترتد عند اصطدامها بجسم يتحرك بالقرب منها.",
+                rationale: "تعتمد الأبواب التلقائية على مجس الأشعة تحت الحمراء (IR) لكشف حركة الأشخاص واقترابهم من البوابة لإرسال إشارة للفتح."
+            },
+            {
+                question: "ما هي \"المنفذات\" (Actuators) أو المخرجات الأساسية في تصميم الروبوتات؟",
+                options: [
+                    "المستشعرات التي تستقبل البيانات",
+                    "البطاريات ولوحات الطاقة الشمسية",
+                    "الأجزاء التي تنفذ الأوامر مادياً كالحركة (المحركات) أو التنبيه (الجرس)",
+                    "الأسلاك والوصلات الداخلية فقط"
+                ],
+                correct: 2,
+                hint: "المنفذات هي بمثابة العضلات والأطراف التي تنفذ قرارات عقل الروبوت.",
+                rationale: "المنفذات والمخرجات (مثل المحركات، المصابيح، والصفارات) تقوم بأداء فعل فيزيائي رداً على أوامر المتحكم الدقيق."
+            },
+            {
+                question: "ما هي الوظيفة الأساسية للترانزستور (Transistor) في دارات الاستشعار التكنولوجية البسيطة؟",
+                options: [
+                    "يعمل كمقاومة ثابتة لا تتغير",
+                    "يعمل كمفتاح إلكتروني للتحكم في مرور التيار الكهربائي",
+                    "يقوم بوظيفة شاحن للبطاريات",
+                    "يقيس المسافات ويمنع الاصطدام"
+                ],
+                correct: 1,
+                hint: "يتحكم في توصيل أو قطع الكهرباء عن المخرجات بواسطة تيار صغير يمر في قاعدته.",
+                rationale: "الترانزستور في دارات الاستشعار البسيطة يعمل كمفتاح إلكتروني (Switch) سريع لتشغيل أو إيقاف المخرجات بناء على إشارة المجس."
+            },
+            {
+                question: "ما هي الشبكة التي تُستخدم لربط الأجهزة في مساحة صغيرة ومحدودة مثل مدرسة الدوحة بكفر عقب؟",
+                options: [
+                    "الشبكة واسعة المدى (WAN)",
+                    "الشبكة المحلية (LAN)",
+                    "الشبكة الإقليمية للمدن (MAN)",
+                    "الشبكة السلكية العامة"
+                ],
+                correct: 1,
+                hint: "ابحث عن اختصار شبكة النطاق المحلي الصغير (Local Area Network).",
+                rationale: "الشبكة المحلية (LAN) مصممة لربط الأجهزة والحواسيب في نطاق جغرافي ضيق كالمنازل والمدارس والشركات الصغيرة."
+            },
+            {
+                question: "ما هي وظيفة الموجه (Router) في شبكات الاتصال ونقل البيانات؟",
+                options: [
+                    "توليد طاقة كهربائية إضافية للأجهزة",
+                    "ربط الشبكات المختلفة وتوجيه البيانات عبر أفضل مسار ممكن",
+                    "حفظ وعرض صفحات المواقع إلكترونياً",
+                    "طباعة الأوراق والصور لاسلكياً"
+                ],
+                correct: 1,
+                hint: "هذا الجهاز هو الأساسي في منزلك لربط شبكتك المحلية بالإنترنت العالمي الخارجي.",
+                rationale: "يقوم الموجه (Router) بربط الشبكات المتباعدة والمختلفة، ويحدد أفضل وأسرع مسار لتوجيه حزم البيانات بينها."
+            },
+            {
+                question: "مستشعر رطوبة التربة يُستخدم بشكل أساسي في أي من الأنظمة والدارات التالية؟",
+                options: [
+                    "نظام الإنذار المبكر من الحرائق",
+                    "نظام الري التلقائي الذكي للمزروعات",
+                    "نظام التوجيه الذاتي للروبوتات المتنقلة",
+                    "نظام حماية البيوت من تسرب الغاز"
+                ],
+                correct: 1,
+                hint: "يركز هذا المستشعر على التربة لمعرفة مدى رطوبتها وحاجتها للري والماء.",
+                rationale: "يقيس مجس رطوبة التربة مستوى جفاف الأرض، وعند جفافها يرسل إشارة للمتحكم لتشغيل مضخات الماء ذاتياً."
+            },
+            {
+                question: "ما هو الجزء التكنولوجي الذي يعتبر بمثابة \"العقل المفكر والمدبر\" للروبوت والأنظمة الذكية؟",
+                options: [
+                    "المحرك الكهربائي الرئيسي",
+                    "مجس اللمس الميكانيكي",
+                    "المتحكم الدقيق (Microcontroller)",
+                    "كابلات الشحن والبطاريات"
+                ],
+                correct: 2,
+                hint: "هو القطعة البرمجية المركزية التي تبرمج وتتحكم بجميع المكونات والمدخلات والمخرجات.",
+                rationale: "المتحكم الدقيق هو معالج مبرمج يمثل عقل النظام؛ حيث يحلل الإشارات القادمة من المجسات ويصدر أوامر التنفيذ للمخرجات."
+            },
+            {
+                question: "مستشعر الموجات فوق الصوتية (Ultrasonic Sensor) يعتمد على أي مبدأ لتجنب عقبات الروبوت؟",
+                options: [
+                    "إرسال موجات صوتية عالية التردد وقياس زمن ارتدادها",
+                    "قياس شدة الضوء الخارجي المتوفر",
+                    "ملامسة واكتشاف الحواجز بالاصطدام المادي",
+                    "قياس ضغط الهواء ورطوبته"
+                ],
+                correct: 0,
+                hint: "يعتمد على إطلاق موجات غير مسموعة ترتد عند الاصطدام بالعائق، تماماً كفكرة الخفاش.",
+                rationale: "يرسل مستشعر الـ Ultrasonic موجات صوتية ترتد عن الحواجز، ومن خلال قياس زمن رحلة الموجة يحسب المسافة بدقة لمنع التصادم."
+            },
+            {
+                question: "ما هي وحدة القياس المستخدمة دولياً لقياس سرعة نقل البيانات في الشبكات والإنترنت؟",
+                options: [
+                    "بايت (Byte)",
+                    "هيرتز (Hz)",
+                    "بت في الثانية (bps)",
+                    "متر في الثانية"
+                ],
+                correct: 2,
+                hint: "تقاس بكمية الخانات الثنائية (Bits) التي تمر عبر أسلاك أو موجات الشبكة في كل ثانية.",
+                rationale: "سرعة الشبكات وتقارب البيانات يُقاس بوحدة البت في الثانية (Bits Per Second) ومضاعفاتها مثل الـ Kbps والـ Mbps والـ Gbps."
+            },
+            {
+                question: "المقاومة الضوئية (LDR) تقل مقاومتها الكهربائية بشدة وتسمح بمرور تيار قوي عندما:",
+                options: [
+                    "تزداد شدة الضوء الساقط عليها",
+                    "تنخفض درجة الحرارة إلى الصفر مئوية",
+                    "ينقطع التيار الكهربائي عنها تماماً",
+                    "تتعرض للماء والرطوبة العالية"
+                ],
+                correct: 0,
+                hint: "هناك علاقة عكسية بين مقاومة الـ LDR الكهربائية وشدة الإضاءة المتوفرة.",
+                rationale: "المقاومة الضوئية LDR تقل مقاومتها وتمرر تياراً أكبر عند تعرضها لإضاءة قوية، وتزداد مقاومتها بشكل هائل في الظلام لمنع مرور التيار."
+            },
+            {
+                question: "ما المقصود بعملية \"رقمنة الصوت\" (Audio Digitization) تكنولوجياً؟",
+                options: [
+                    "تحويل الصوت التماثلي (كصوت الإنسان) إلى لغة رقمية (0 و 1) يفهمها الحاسوب",
+                    "تضخيم الصوت باستخدام سماعات ضخمة",
+                    "تغيير نغمة الصوت لتصبح مضحكة",
+                    "مسح وحذف الملفات الصوتية التالفة"
+                ],
+                correct: 0,
+                hint: "تحويل الصوت الطبيعي والموجات الصوتية إلى تمثيل ثنائي رقمي ليتم حفظه على أجهزة الكمبيوتر.",
+                rationale: "رقمنة الصوت تعتمد على أخذ عينات متتالية وتصنيفها وتحويلها إلى أرقام ثنائية (0 و 1) ليتمكن الحاسوب من حفظها ومعالجتها."
+            },
+            {
+                question: "أي مما يلي يُعد خير مثال على شبكة واسعة المدى (WAN)؟",
+                options: [
+                    "شبكة مختبر الحاسوب في مدرسة الدوحة",
+                    "شبكة الإنترنت العالمية المتكاملة",
+                    "شبكة الواي فاي المنزلية القصيرة",
+                    "شبكة طابعة المكتبة المشتركة"
+                ],
+                correct: 1,
+                hint: "هي شبكة عملاقة تتجاوز الحدود الجغرافية لتربط الدول والقارات والعالم بأكمله.",
+                rationale: "شبكة الإنترنت العالمية هي المثال الأوضح والأساسي للشبكة واسعة المدى (WAN) حيث تربط مليارات الأجهزة حول القارات."
+            },
+            {
+                question: "ما هو الجهاز الذي يربط الأجهزة داخل نفس الشبكة المحلية ويوجه البيانات للجهاز المستهدف فقط بدقة؟",
+                options: [
+                    "المبدل (Switch)",
+                    "المستشعر (Sensor)",
+                    "المحرك (Motor)",
+                    "البطارية"
+                ],
+                correct: 0,
+                hint: "هو جهاز محلي ذكي يقرأ العناوين الفيزيائية (MAC Address) للأجهزة داخل الشبكة لتقليل الازدحام.",
+                rationale: "يقوم المبدل (Switch) بنقل حزم البيانات وتوجيهها بدقة للجهاز المعني والمستهدف داخل الشبكة المحلية دون إرسالها للجميع."
+            },
+            {
+                question: "الوسائط المتعددة (Multimedia) تُعرّف تكنولوجياً بأنها:",
+                options: [
+                    "مجموعة من الأسلاك المتداخلة لتوصيل الكهرباء",
+                    "نسيج متكامل من النص والصوت والصور الثابتة والمتحركة والفيديو يعرض في تطبيق واحد",
+                    "أجهزة طبية حديثة تستخدم لقياس دقات القلب",
+                    "محركات تبحث في الإنترنت"
+                ],
+                correct: 1,
+                hint: "الكلمة تعني جمع ودمج أكثر من وسيلة للتواصل كالصوت مع الصورة مع النص لتقديم فكرة ممتعة.",
+                rationale: "الوسائط المتعددة (Multimedia) هي دمج متكامل ومبرمج للنصوص، الأصوات، الصور، الرسوم والفيديو لإنتاج محتوى تفاعلي مشوق."
+            },
+            {
+                question: "في لغة البرمجة الشهيرة \"سكراتش\" (Scratch)، الكائن الرسومي الذي نبرمجه ويتحرك على المنصة يسمى:",
+                options: [
+                    "المنصة أو الخلفية (Stage)",
+                    "المتغيرات البرمجية",
+                    "الكائن أو السبرايت (Sprite)",
+                    "اللبنة أو الأداة"
+                ],
+                correct: 2,
+                hint: "تذكروا شخصية القطة المشهورة أو أي عنصر آخر يتم وضعه لبرمجة حركته وسلوكه.",
+                rationale: "الكائن (Sprite) هو أي شكل أو شخصية تضاف للمشروع في بيئة سكراتش وتخضع للبرمجة والأوامر والكتل البرمجية."
+            },
+            {
+                question: "ما هي الوظيفة الأساسية لمجس اللمس (Touch Sensor) في أنظمة الروبوتات وتجنب العقبات؟",
+                options: [
+                    "معرفة درجة حرارة العوائق عن بعد",
+                    "اكتشاف الاصطدام المادي المباشر بحاجز لإرسال إشارة للتراجع أو التغيير",
+                    "قياس عمق الأجسام دون الاقتراب منها",
+                    "تشغيل المروحة الداخلية لتبريد الروبوت"
+                ],
+                correct: 1,
+                hint: "هذا المجس يعمل عند حدوث تلامس ميكانيكي حقيقي وضغط من العائق على مقدمة الروبوت.",
+                rationale: "مجس اللمس يكتشف الاصطدام الميكانيكي الفعلي مع أي عائق، ويرسل فوراً إشارة للمتحكم لإجراء مناورة وتجنب التعلق."
+            },
+            {
+                question: "ما هو نظام الألوان المعتمد في المطابع وفي طباعة الكتب المدرسية ككتب تكنولوجيا مدرسة الدوحة؟",
+                options: [
+                    "نظام RGB الخاص بالشاشات",
+                    "نظام CMYK الخاص بالأحبار والورق المطبوع",
+                    "نظام Grayscale الرمادي فقط",
+                    "نظام الألوان الثنائية الحادة"
+                ],
+                correct: 1,
+                hint: "يعتمد على دمج أربعة ألوان أساسية من أحبار الطباعة (Cyan, Magenta, Yellow, Key/Black).",
+                rationale: "يستخدم نظام CMYK في طباعة المنشورات والأوراق لأنه مخصص لمزج الأحبار، عكس نظام RGB المخصص للضوء المنبعث من الشاشات."
+            },
+            {
+                question: "ما هو جدار الحماية (Firewall) في أنظمة أمن المعلومات والشبكات؟",
+                options: [
+                    "سياج حديدي يحيط بغرفة السيرفرات لمنع اللصوص من سرقتها",
+                    "نظام أمان برمجي أو مادي يراقب ويحمي الشبكة من محاولات الاختراق الخارجية",
+                    "جهاز تكييف قوي يمنع ارتفاع حرارة الأجهزة",
+                    "سلك كهربائي ثقيل يحمي الدارات من الصواعق"
+                ],
+                correct: 1,
+                hint: "هو مثل حارس بوابة ذكي يفحص كل البيانات والطلبات الداخلة والخارجة من وإلى شبكتك الخاصة.",
+                rationale: "جدار الحماية (Firewall) يفحص حركة مرور البيانات عبر الشبكة ويمنع القرصنة والاختراقات والاتصالات المشبوهة والبرمجيات الخبيثة."
+            },
+            {
+                question: "تتكون الصورة الملونة في نظام RGB بوضع عمق لوني مقداره 24 بت، مما يعني أن كل لون أساسي يمثل بـ:",
+                options: [
+                    "4 بت فقط لكل لون أساسي",
+                    "8 بت (بايت واحد) لكل لون أساسي",
+                    "16 بت لكل لون أساسي",
+                    "24 بت لكل لون أساسي"
+                ],
+                correct: 1,
+                hint: "العمق الكلي هو 24 بت، ويتم توزيعه بالتساوي على الألوان الثلاثة (الأحمر والأخضر والأزرق).",
+                rationale: "في عمق الألوان 24 بت، يخصص 8 بت (بايت واحد) لكل لون من الألوان الثلاثة الأساسية (8 * 3 = 24 بت)، مما ينتج حوالي 16.7 مليون لون."
+            },
+            {
+                question: "ما هي الفائدة العظيمة لمجس الغاز (Gas Sensor) في أنظمة الأمان والبيوت الذكية؟",
+                options: [
+                    "قياس حرارة الجو لتشغيل التكييف",
+                    "الكشف المبكر عن تسرب الغازات السامة أو سريعة الاشتعال وإطلاق صفارات الإنذار",
+                    "التحكم بارتفاع إضاءة الغرفة ومستواها",
+                    "ضبط حركة أبواب الغرف تلقائياً"
+                ],
+                correct: 1,
+                hint: "يحمي البيوت والمصانع من كوارث الاختناق والحرائق الناتجة عن تسرب أسطوانات الغاز.",
+                rationale: "يتحسس مجس الغاز تركيز الغازات في الهواء، وفي حال وجود تسرب يرسل فوراً إشارة للمتحكم لإطلاق جرس الإنذار أو إغلاق الصمامات تلقائياً."
+            },
+            {
+                question: "ما هو الجزء المسؤول في الروبوت عن تحويل الطاقة الكهربائية إلى طاقة حركية دورانية لتشغيل العجلات؟",
+                options: [
+                    "مجس المسافة الذكي",
+                    "البطارية المركزية للروبوت",
+                    "محرك التيار المستمر (DC Motor)",
+                    "لوحة التحكم الرقمية (الأردوينو)"
+                ],
+                correct: 2,
+                hint: "هو المنفذ الحركي الذي يدور عند إمداده بالكهرباء ليقود عجلات الروبوت إلى الأمام أو الخلف.",
+                rationale: "محرك التيار المستمر (DC Motor) يقوم بتحويل التيار والجهد الكهربائي لحركة ميكانيكية دورانية لدفع وتوجيه عجلات الروبوت."
+            },
+            {
+                question: "ما المقصود بـ \"العنوان الرقمي للجهاز على الشبكة\" (IP Address)؟",
+                options: [
+                    "رقم تسلسلي خاص مطبوع على خلفية شاشة الحاسوب",
+                    "رقم الهوية الشخصية الخاصة بصاحب جهاز الحاسوب",
+                    "عنوان رقمي فريد يُعطى لكل جهاز متصل بالشبكة أو الإنترنت لتمييزه وإرسال واستقبال البيانات من خلاله",
+                    "رقم سري لشبكة الواي فاي المنزلية"
+                ],
+                correct: 2,
+                hint: "مثل صندوق بريد أو رقم هاتف فريد يستحيل تكراره على الشبكة ليعرف العالم كيفية نقل البيانات إليك.",
+                rationale: "الـ IP Address هو المعرف الرقمي الفريد لكل جهاز متصل بالإنترنت والشبكة لتبادل حزم البيانات بنجاح وبدون تداخل."
+            },
+            {
+                question: "ما هي التقنية اللاسلكية المفضلة لربط الأجهزة الذكية المتجاورة ببعضها (في نطاق أقل من 10 أمتار) لتناقل الملفات؟",
+                options: [
+                    "تقنية الألياف الضوئية المتقدمة",
+                    "تقنية البلوتوث (Bluetooth)",
+                    "تقنية الرادار لتحديد الاتجاهات",
+                    "موجات الراديو بعيدة المدى"
+                ],
+                correct: 1,
+                hint: "تقنية نستخدمها لربط هواتفنا بسماعات الأذن اللاسلكية أو ساعات اليد الذكية.",
+                rationale: "البلوتوث هو بروتوكول اتصال لاسلكي قصير المدى ومخصص للشبكات الشخصية اللاسلكية لنقل البيانات بشكل سهل وبطاقة منخفضة."
+            },
+            {
+                question: "كيف تؤثر زيادة دقة وتفاصيل الصورة (Resolution) وعدد البكسلات فيها على حجم الملف التخزيني؟",
+                options: [
+                    "يقل حجم الملف وتزداد التفاصيل والوضوح",
+                    "يزداد حجم الملف وتتحسن دقة وجودة وتفاصيل الصورة بشكل كبير",
+                    "لا يتأثر حجم الملف التخزيني ولا يتغير نهائياً",
+                    "يزداد حجم الملف ولكن الصورة تصبح مشوشة وغير مفهومة"
+                ],
+                correct: 1,
+                hint: "كلما احتوت الصورة على مربعات بكسل أكثر، تطلب ذلك مساحة أكبر في الذاكرة لتخزين تفاصيل الألوان لكل مربع.",
+                rationale: "زيادة عدد البكسلات يرفع دقة الصورة وتفاصيلها ووضوحها، ولكنه يرفع مباشرة مساحة الملف التخزينية على القرص الصلب."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let isAnswered = false;
+        let selectedOptionIdx = null;
+
+        // تشغيل شاشة الأسئلة عند البدء
+        function startQuiz() {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        // تحميل وتجهيز السؤال الحالي
+        function loadQuestion() {
+            isAnswered = false;
+            selectedOptionIdx = null;
+            
+            const q = questions[currentQuestion];
+            
+            // تحديث شريط التقدم الفعلي والعدادات
+            document.getElementById('question-number').innerText = `السؤال ${currentQuestion + 1} من ${questions.length}`;
+            const progressPercent = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('score-badge').innerText = `النقاط: ${score} ⭐`;
+
+            // كتابة نص السؤال والتلميح المساعد
+            document.getElementById('question-text').innerText = q.question;
+            document.getElementById('hint-box').innerText = q.hint;
+            document.getElementById('hint-box').classList.add('hidden'); // إخفاء التلميح افتراضياً لكل سؤال جديد
+
+            // مسح وتصفير حاوية التوضيح والأزرار
+            document.getElementById('explanation-box').classList.add('hidden');
+            
+            const actionBtn = document.getElementById('action-btn');
+            actionBtn.disabled = true;
+            actionBtn.className = "w-full bg-slate-200 text-slate-400 font-bold text-base py-3.5 rounded-2xl shadow-sm cursor-not-allowed transition-all touch-button flex items-center justify-center gap-2";
+            actionBtn.innerHTML = `<span>تحقق من الإجابة</span> <i class="fa-solid fa-circle-check"></i>`;
+            actionBtn.onclick = submitAnswer;
+
+            // إعداد أزرار الخيارات التفاعلية المخصصة للجوال
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.id = `opt-${idx}`;
+                btn.onclick = () => selectOption(idx);
+                btn.className = "w-full text-right p-4 border-2 border-slate-100 bg-slate-50 hover:bg-slate-100 active:scale-[0.99] rounded-2xl text-slate-700 font-semibold text-sm transition-all duration-150 flex items-center justify-between gap-3 min-h-[56px]";
+                
+                // نص الخيار مع رمز مميز فارغ قبل الاختيار
+                btn.innerHTML = `
+                    <span class="leading-relaxed">${opt}</span>
+                    <span id="bullet-${idx}" class="w-5 h-5 rounded-full border border-slate-300 flex-shrink-0 flex items-center justify-center text-xs"></span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        // كشف وإخفاء التلميح المساعد
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        // عند قيام رندا باختيار أحد البدائل المتاحة
+        function selectOption(idx) {
+            if (isAnswered) return; // منع التبديل بعد إرسال الإجابة
+
+            selectedOptionIdx = idx;
+            const q = questions[currentQuestion];
+
+            // إعادة تعيين وتصفير حواف وألوان جميع أزرار الخيارات للوضع الطبيعي
+            q.options.forEach((_, oIdx) => {
+                const btn = document.getElementById(`opt-${oIdx}`);
+                const bullet = document.getElementById(`bullet-${oIdx}`);
+                btn.className = "w-full text-right p-4 border-2 border-slate-100 bg-slate-50 hover:bg-slate-100 active:scale-[0.99] rounded-2xl text-slate-700 font-semibold text-sm transition-all duration-150 flex items-center justify-between gap-3 min-h-[56px]";
+                bullet.className = "w-5 h-5 rounded-full border border-slate-300 flex-shrink-0 flex items-center justify-center text-xs";
+                bullet.innerHTML = '';
+            });
+
+            // تفعيل وتغيير شكل الخيار المحدد حالياً
+            const activeBtn = document.getElementById(`opt-${idx}`);
+            const activeBullet = document.getElementById(`bullet-${idx}`);
+            activeBtn.className = "w-full text-right p-4 border-2 border-emerald-500 bg-emerald-50 text-emerald-900 rounded-2xl font-bold text-sm transition-all duration-150 flex items-center justify-between gap-3 min-h-[56px]";
+            activeBullet.className = "w-5 h-5 rounded-full bg-emerald-500 border border-emerald-500 flex-shrink-0 flex items-center justify-center text-white text-[10px]";
+            activeBullet.innerHTML = '<i class="fa-solid fa-check"></i>';
+
+            // تفعيل زر التحقق
+            const actionBtn = document.getElementById('action-btn');
+            actionBtn.disabled = false;
+            actionBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-base py-3.5 rounded-2xl shadow-md transition-all touch-button flex items-center justify-center gap-2 active:scale-95";
+        }
+
+        // إرسال الإجابة والتحقق من صحتها وتلوين الخيارات
+        function submitAnswer() {
+            if (selectedOptionIdx === null || isAnswered) return;
+            isAnswered = true;
+
+            const q = questions[currentQuestion];
+            const correctIdx = q.correct;
+
+            // تجميد وتعطيل تفاعلية الخيارات فور التحقق لمنع الغش والعبث
+            q.options.forEach((_, oIdx) => {
+                document.getElementById(`opt-${oIdx}`).disabled = true;
+            });
+
+            const selectedBtn = document.getElementById(`opt-${selectedOptionIdx}`);
+            const correctBtn = document.getElementById(`opt-${correctIdx}`);
+            const selectedBullet = document.getElementById(`bullet-${selectedOptionIdx}`);
+            const correctBullet = document.getElementById(`bullet-${correctIdx}`);
+
+            const explanationBox = document.getElementById('explanation-box');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const rationaleText = document.getElementById('rationale-text');
+
+            if (selectedOptionIdx === correctIdx) {
+                // إجابة صحيحة!
+                score++;
+                selectedBtn.className = "w-full text-right p-4 border-2 border-emerald-500 bg-emerald-50 text-emerald-900 rounded-2xl font-bold text-sm transition-all flex items-center justify-between gap-3 min-h-[56px]";
+                selectedBullet.className = "w-5 h-5 rounded-full bg-emerald-500 text-white flex-shrink-0 flex items-center justify-center text-[10px]";
+                selectedBullet.innerHTML = '<i class="fa-solid fa-check"></i>';
+
+                feedbackIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
+                feedbackTitle.innerText = "إجابة صحيحة ممتازة يا رندا! 🎉";
+                feedbackTitle.className = "text-sm font-bold text-emerald-700";
+            } else {
+                // إجابة خاطئة!
+                selectedBtn.className = "w-full text-right p-4 border-2 border-rose-400 bg-rose-50 text-rose-900 rounded-2xl font-bold text-sm transition-all flex items-center justify-between gap-3 min-h-[56px]";
+                selectedBullet.className = "w-5 h-5 rounded-full bg-rose-500 text-white flex-shrink-0 flex items-center justify-center text-[10px]";
+                selectedBullet.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+                // تمييز الخيار الصحيح بلون أخضر ناعم
+                correctBtn.className = "w-full text-right p-4 border-2 border-emerald-400 bg-emerald-50 text-emerald-950 rounded-2xl font-bold text-sm transition-all flex items-center justify-between gap-3 min-h-[56px]";
+                correctBullet.className = "w-5 h-5 rounded-full bg-emerald-500 text-white flex-shrink-0 flex items-center justify-center text-[10px]";
+                correctBullet.innerHTML = '<i class="fa-solid fa-check"></i>';
+
+                feedbackIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-500"></i>';
+                feedbackTitle.innerText = "خيرها في غيرها! حاولي التركيز";
+                feedbackTitle.className = "text-sm font-bold text-rose-700";
+            }
+
+            // عرض التوضيح التكنولوجي والتعليمي فوراً لتعزيز الفائدة والدراسة
+            rationaleText.innerText = q.rationale;
+            explanationBox.classList.remove('hidden');
+
+            // تحديث شريط التقدم الفعلي ليعبر عن حل السؤال الحالي بالكامل
+            const progressPercent = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('score-badge').innerText = `النقاط: ${score} ⭐`;
+
+            // تغيير زر التحقق ليكون زر الانتقال للسؤال التالي
+            const actionBtn = document.getElementById('action-btn');
+            actionBtn.innerHTML = `<span>السؤال التالي</span> <i class="fa-solid fa-circle-arrow-left"></i>`;
+            actionBtn.onclick = nextQuestion;
+        }
+
+        // الانتقال للسؤال التالي أو استعراض لوحة النتيجة عند الانتهاء
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // عرض لوحة وتفاصيل النتيجة النهائية والتكريم المخصص لرندا
+        function showResults() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            // كتابة الدرجة النهائية
+            document.getElementById('final-score-text').innerText = `${score} / ${questions.length}`;
+
+            // تحضير رسالة تقدير ممتازة تليق بأدائها وعملها
+            const msgBox = document.getElementById('motivational-message');
+            if (score === questions.length) {
+                msgBox.innerText = "يا للهول! إبداع بلا حدود ودرجة كاملة مدهشة! رندا أنتِ فخر مدرسة الدوحة ومعلماتها ومستقبل التكنولوجيا مشرق بكِ! 🌟👏";
+                msgBox.className = "text-sm font-bold text-amber-600 px-4";
+            } else if (score >= 25) {
+                msgBox.innerText = "أداء ممتاز جداً وذكاء خارق! رندا متميزة وتستحقين لقب بطلة التكنولوجيا بلا منازع! واصلي التقدم المذهل. 🏆";
+                msgBox.className = "text-sm font-bold text-emerald-600 px-4";
+            } else if (score >= 18) {
+                msgBox.innerText = "عمل جيد ورائع يا رندا! معلوماتكِ التكنولوجية قوية وراسخة، ويسعدنا جداً هذا النجاح الباهر! 🚀";
+                msgBox.className = "text-sm font-bold text-teal-600 px-4";
+            } else {
+                msgBox.innerText = "محاولة جيدة يا رندا! لم يفت الأوان، يمكنكِ مراجعة التوضيحات التكنولوجية في الأسئلة وإعادة المحاولة لتحقيق العلامة الكاملة! 👍";
+                msgBox.className = "text-sm font-bold text-slate-600 px-4";
+            }
+        }
+
+        // تصفير واستعادة وضع الاختبار للبداية لتمكين رندا أو صديقاتها من اللعب مجدداً
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            isAnswered = false;
+            selectedOptionIdx = null;
+
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
